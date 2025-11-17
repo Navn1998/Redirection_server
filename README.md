@@ -5,15 +5,9 @@
 When working with a customer who couldn't create an A record for Akamai CDN to access their domain due to internal DNS restrictions, I implemented a high-availability (HA) redirection server. This redirection server acts as a proxy between the customer and the Akamai CDN. To achieve HA, I leveraged Linode's IP sharing feature, and the server was built on CentOS. Below are the steps, commands, and HTML code to set this up.
 The limitation this solved was the customer’s inability to create the required DNS CNAME/A record pointing their public hostname to Akamai’s edge hostname, due to internal DNS restrictions at the domain owner (BCCI), so a shared-IP redirection proxy was deployed to forward traffic to the Akamai CDN without needing that DNS change.
 
-Why the DNS block mattered??
-Standard Akamai onboarding expects a DNS CNAME from the site’s hostname to an Akamai edge hostname, which wasn’t possible here because the upstream DNS administrator would not create the record the integration required.​
-
-Without permission to create or modify that DNS CNAME/A record at the authoritative zone, traffic could not be routed through Akamai directly, necessitating an alternate ingress under the team’s control.​
-
 What the proxy did??
 Two CentOS instances served a simple HTTP redirect that immediately sent users to the Akamai CDN URL, functioning as a proxy layer that the team could point users to without changing the BCCI-controlled DNS for the original hostname.​
 
-The redirect page used a meta refresh and a fallback link to the CDN endpoint, enabling access flows to Akamai despite the lack of a first-party DNS CNAME to the edge hostname.
 ---
 
 ## Key Components
